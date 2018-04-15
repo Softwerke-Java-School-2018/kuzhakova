@@ -17,6 +17,13 @@ public class Client {
         this.birthDate = birthDate;
     }
 
+    public Client(int id, String firstName, String lastName, LocalDate birthDate) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthDate = birthDate;
+    }
+
     public String getFirstName() {
         return firstName;
     }
@@ -54,15 +61,16 @@ public class Client {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Client client = (Client) o;
-        return id == client.id &&
-                Objects.equals(firstName, client.firstName) &&
+        return  Objects.equals(firstName, client.firstName) &&
                 Objects.equals(lastName, client.lastName) &&
                 Objects.equals(birthDate, client.birthDate);
     }
 
-    @Override
-    public int hashCode() {
 
-        return Objects.hash(firstName, lastName, id, birthDate);
+    @Override
+    public String toString() {
+        return "Client: " + firstName +
+                " " + lastName +
+                ", " + birthDate;
     }
 }

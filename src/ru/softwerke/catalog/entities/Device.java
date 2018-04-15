@@ -33,7 +33,7 @@ public class Device {
 
     @Override
     public String toString() {
-        return deviceType + " " + manufacturer + " " + modelDevice + " " + color;
+        return "Device:" + deviceType + " " + manufacturer + " " + modelDevice + " " + color;
     }
 
     public int getId() {
@@ -97,8 +97,7 @@ public class Device {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Device device = (Device) o;
-        return id == device.id &&
-                Objects.equals(modelDevice, device.modelDevice) &&
+        return  Objects.equals(modelDevice, device.modelDevice) &&
                 manufacturer == device.manufacturer &&
                 color == device.color &&
                 Objects.equals(releaseDate, device.releaseDate) &&

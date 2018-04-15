@@ -12,6 +12,8 @@ import ru.softwerke.enums.*;
 
 public class View {
     Controller controller = new Controller();
+    Scanner scanner = new Scanner(System.in);
+
     private String strMainMenu = "Menu\n" +
             "1. Clients\n" +
             "2. Devices\n" +
@@ -44,7 +46,7 @@ public class View {
             String choice;
             do {
                 System.out.println(strMainMenu);
-                choice = readLine();
+                choice = scanner.nextLine();
                 switch (choice) {
                     case "1":
                         menuClients();
@@ -75,7 +77,7 @@ public class View {
         String choice;
         do {
             System.out.println(strMenuClient);
-            choice = readLine();
+            choice = scanner.nextLine();
             switch (choice) {
                 case "1":
                     controller.printClientList();
@@ -84,6 +86,7 @@ public class View {
                     if (menuAddClient()) System.out.println("Client successfully added.");
                     break;
                 case "3":
+                    if (menuDeleteClient()) System.out.println("Client successfully deleted.");
                     break;
                 case "4":
                     break;
@@ -100,7 +103,7 @@ public class View {
         String choice;
         do {
             System.out.println(strMenuDevice);
-            choice = readLine();
+            choice = scanner.nextLine();
             switch (choice) {
                 case "1":
                     controller.printDeviceList();
@@ -123,7 +126,7 @@ public class View {
 
     public void menuChecks() {
         System.out.println(strMenuCheck);
-        String choice = readLine();
+        String choice = scanner.nextLine();
         do {
             switch (choice) {
                 case "1":
@@ -146,31 +149,31 @@ public class View {
     public Boolean menuAddDevice() {
         try {
             System.out.println("Enter manufacturer of device:");
-            String manufacturerString = readLine();
-            Manufacturer manufacturer = Manufacturer.getManufacturerByString(manufacturerString);
+            String manufacturerString = scanner.nextLine();
+            Manufacturer manufacturer = Manufacturer.valueOf(manufacturerString.toUpperCase());
 
             System.out.println("Enter color of device:");
-            String colorString = readLine();
-            Color color = Color.getColorByString(colorString);
+            String colorString = scanner.nextLine();
+            Color color = Color.valueOf(colorString.toUpperCase());
 
             System.out.println("Enter date of release (dd/mm/yyyy):");
-            String enterReleaseDate = readLine();
+            String enterReleaseDate = scanner.nextLine();
             while (!checkWithRegExp(enterReleaseDate)){
                 System.out.println("Wrong enter! Enter date:");
-                enterReleaseDate = readLine();
+                enterReleaseDate = scanner.nextLine();
             }
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             LocalDate releaseDate = LocalDate.parse(enterReleaseDate, formatter);
 
             System.out.println("Enter type of device:");
-            String typeString = readLine();
-            DeviceType deviceType = DeviceType.getDeviceTypeByString(typeString);
+            String typeString = scanner.nextLine();
+            DeviceType deviceType = DeviceType.valueOf(typeString.toUpperCase());
 
             System.out.println("Enter price of device:");
-            BigDecimal price = new BigDecimal(readLine());
+            BigDecimal price = new BigDecimal(scanner.nextLine());
 
             System.out.println("Enter model of device:");
-            String model = readLine().toUpperCase();
+            String model = scanner.nextLine().toUpperCase();
 
             return controller.addDevice(model, manufacturer, color, releaseDate, deviceType, price);
         } catch (Exception e) {
@@ -179,25 +182,27 @@ public class View {
         }
     }
 
-    public boolean checkWithRegExp(String userNameString){
+
+
+    public boolean checkWithRegExp(String dateString){
         Pattern p = Pattern.compile("(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\\d\\d");
-        Matcher m = p.matcher(userNameString);
+        Matcher m = p.matcher(dateString);
         return m.matches();
     }
 
     public Boolean menuAddClient() {
         try {
             System.out.println("Enter first name:");
-            String fName = readLine();
+            String fName = scanner.nextLine();
 
             System.out.println("Enter last name:");
-            String lName = readLine();
+            String lName = scanner.nextLine();
 
             System.out.println("Enter date of birth (dd/mm/yyyy):");
-            String enterBirthDate = readLine();
+            String enterBirthDate = scanner.nextLine();
             while (!checkWithRegExp(enterBirthDate)){
                 System.out.println("Wrong enter! Enter date:");
-                enterBirthDate = readLine();
+                enterBirthDate = scanner.nextLine();
             }
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             LocalDate birthDate = LocalDate.parse(enterBirthDate, formatter);
@@ -209,10 +214,29 @@ public class View {
         }
     }
 
-    public String readLine() {
-        Scanner scanner = new Scanner(System.in);
-        String in = scanner.nextLine();
-        return in;
+    public Boolean menuDeleteClient() {
+        try {
+            System.out.println("Enter first name:");
+            String fName = scanner.nextLine();
+
+            System.out.println("Enter last name:");
+            String lName = scanner.nextLine();
+
+            System.out.println("Enter date of birth (dd/mm/yyyy):");
+            String enterBirthDate = scanner.nextLine();
+            while (!checkWithRegExp(enterBirthDate)){
+                System.out.println("Wrong enter! Enter date:");
+                enterBirthDate = scanner.nextLine();
+            }
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            LocalDate birthDate = LocalDate.parse(enterBirthDate, formatter);
+
+            return controller.deleteClient(fName, lName, birthDate);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
     }
+
 
 }
