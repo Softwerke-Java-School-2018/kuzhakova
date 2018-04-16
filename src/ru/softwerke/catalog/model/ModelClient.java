@@ -1,4 +1,4 @@
-package ru.softwerke.catalog.Model;
+package ru.softwerke.catalog.model;
 
 import ru.softwerke.catalog.entities.Client;
 
@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class ModelClient {
     private List<Client> clientList = new ArrayList<>();
@@ -42,25 +43,38 @@ public class ModelClient {
         }
     }
 
-    public List<Client> getClientList() {
-        return clientList;
+    public Stream<Client> getStreamClientList() {
+        return clientList.stream();
     }
 
-    public List<Client> selectClients(String fName, String lName, LocalDate birthDate) {
-        List<Client> selectedClientList = new ArrayList<>();
+    public Stream<Client> selectClients(String fName, String lName, LocalDate birthDate) {
+        List<Client> selectedClientList = new ArrayList<Client>();
         Boolean findFName = false;
         Boolean findLName = false;
-        Boolean findBDate;
+        Boolean findBDate = false;
         for (Client client : clientList) {
             if (fName != null) findFName = client.getFirstName().contains(fName);
             if (lName != null) findLName = client.getLastName().contains(lName);
-            findBDate = client.getBirthDate() == birthDate;
+            if (birthDate != null) findBDate = client.getBirthDate().isEqual(birthDate);
             if (findBDate || findFName || findLName) selectedClientList.add(client);
         }
-        return selectedClientList;
+        if (selectedClientList.size() != 0) return selectedClientList.stream();
+        return null;
     }
 
-    public Client exactMatch(Client enteredClient) {
+    public Boolean addClient(Client client) {
+        return clientList.add(client);
+    }
+
+    public Boolean deleteClient(Client client) {
+        return clientList.remove(client);
+    }
+
+    public Boolean deleteClient(int ind) {
+        return clientList.removeIf(c -> c.getId() == ind);
+    }
+
+    public Client equalsClient(Client enteredClient) {
         for (Client c : clientList) {
             if (c.equals(enteredClient)) return c;
         }

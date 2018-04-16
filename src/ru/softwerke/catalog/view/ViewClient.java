@@ -1,16 +1,16 @@
-package ru.softwerke.catalog.View;
+package ru.softwerke.catalog.view;
 
-import ru.softwerke.catalog.Controller.ControllerClient;
+import ru.softwerke.catalog.controller.ControllerClient;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class ViewClient extends View {
-    ControllerClient controllerClient = new ControllerClient();
     Scanner scanner = new Scanner(System.in);
-    LocalDate birthDate;
-    String fName, lName, enterBirthDate;
+    private ControllerClient controllerClient = new ControllerClient();
+    private LocalDate birthDate;
+    private String fName, lName, enterBirthDate;
 
     public final String MENU_CLIENT = "\nClients:\n" +
             "1. Print list\n" +
@@ -33,7 +33,7 @@ public class ViewClient extends View {
             choice = scanner.nextLine();
             switch (choice) {
                 case "1":
-                    controllerClient.printClientList();
+                    controllerClient.printClientList(System.out::println);
                     break;
                 case "2":
                     menuAddClient();
@@ -57,7 +57,7 @@ public class ViewClient extends View {
         } while (!choice.equals("0"));
     }
 
-    public void menuSortClients(){
+    public void menuSortClients() {
         Scanner scanInt = new Scanner(System.in);
         System.out.println(MENU_SORT_CLIENTS);
         int what = scanInt.nextInt();
@@ -66,7 +66,7 @@ public class ViewClient extends View {
         controllerClient.sort(what, how);
     }
 
-    public void toEnterData() {
+    public void enterData() {
         birthDate = null;
         System.out.println("Enter first name:");
         fName = scanner.nextLine();
@@ -86,15 +86,15 @@ public class ViewClient extends View {
     }
 
     public void menuAddClient() {
-        toEnterData();
+        enterData();
         if (controllerClient.addClient(fName, lName, birthDate))
             System.out.println("Client successfully added.");
-        else System.out.println("Invalid input. First name and/or last name were not entered.");
+        else System.out.println("Invalid input. The information was not completely entered.");
     }
 
 
     public void menuDeleteClient() {
-        toEnterData();
+        enterData();
         if (!controllerClient.deleteClient(fName, lName, birthDate)) {
             if (!controllerClient.printFoundClientList(fName, lName, birthDate)) {
                 System.out.println("Removal did not happen.");
@@ -105,9 +105,9 @@ public class ViewClient extends View {
     }
 
     public void menuFindClient() {
-        toEnterData();
+        enterData();
         if (controllerClient.findClient(fName, lName, birthDate) == null &&
-                controllerClient.findSimilarClients(fName, lName, birthDate) == null)
-                System.out.println("No clients found for this query.");
+                controllerClient.findSimilarClients(fName, lName, birthDate) == false)
+            System.out.println("No clients found for this query.");
     }
 }

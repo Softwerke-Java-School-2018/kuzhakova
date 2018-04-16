@@ -1,6 +1,6 @@
-package ru.softwerke.catalog.Controller;
+package ru.softwerke.catalog.controller;
 
-import ru.softwerke.catalog.Model.ModelClient;
+import ru.softwerke.catalog.model.ModelClient;
 import ru.softwerke.catalog.entities.Client;
 
 import java.time.LocalDate;
