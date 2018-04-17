@@ -1,6 +1,6 @@
-package ru.softwerke.catalog.View;
+package ru.softwerke.catalog.view;
 
-import ru.softwerke.catalog.Controller.ControllerCheck;
+import ru.softwerke.catalog.controller.ControllerCheck;
 import java.util.Scanner;
 
 public class ViewCheck extends View {
@@ -13,6 +13,19 @@ public class ViewCheck extends View {
             "4. Find check\n" +
             "5. Sort check\n" +
             "0. Back";
+    public static ViewCheck instance;
+
+    private ViewCheck() {
+    }
+
+    public static ViewCheck getInstance() {
+        if (instance == null)
+            synchronized (ViewCheck.class) {
+                if (instance == null)
+                    instance = new ViewCheck();
+            }
+        return instance;
+    }
 
     public void menuChecks() {
         System.out.println(MENU_CHECK);

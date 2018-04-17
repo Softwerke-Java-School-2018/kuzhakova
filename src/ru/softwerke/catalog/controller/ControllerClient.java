@@ -24,8 +24,8 @@ public class ControllerClient {
         addClient("Christopher", "Nolan", LocalDate.of(1971, 2, 12));
     }
 
-    public void printClientList(Consumer<? super Client> action) {
-        modelClient.getStreamClientList().forEach(action);
+    public String[] clientListToStringArray() {
+        return modelClient.getStreamClientList().map(c -> c.toString()).toArray(String[]::new);
     }
 
     public Boolean printFoundClientList(String fName, String lName, LocalDate birthDate) {

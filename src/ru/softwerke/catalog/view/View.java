@@ -1,4 +1,4 @@
-package ru.softwerke.catalog.View;
+package ru.softwerke.catalog.view;
 
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -10,7 +10,6 @@ public class View {
     ViewDevice viewDevice;
     ViewCheck viewCheck;
 
-
     public final String MAIN_MENU = "Menu\n" +
             "1. Clients\n" +
             "2. Devices\n" +
@@ -21,9 +20,9 @@ public class View {
             "2. Descending\n";
 
     public void menu() {
-        viewClient = new ViewClient();
-        viewDevice = new ViewDevice();
-        viewCheck = new ViewCheck();
+        viewClient = ViewClient.getInstance();
+        viewDevice = ViewDevice.getInstance();
+        viewCheck = ViewCheck.getInstance();
         String choice;
         do {
             System.out.println(MAIN_MENU);

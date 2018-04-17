@@ -11,6 +11,19 @@ public class ViewClient extends View {
     private ControllerClient controllerClient = new ControllerClient();
     private LocalDate birthDate;
     private String fName, lName, enterBirthDate;
+    public static ViewClient instance;
+
+    private ViewClient() {
+    }
+
+    public static ViewClient getInstance() {
+        if (instance == null)
+            synchronized (ViewClient.class) {
+                if (instance == null)
+                    instance = new ViewClient();
+            }
+        return instance;
+    }
 
     public final String MENU_CLIENT = "\nClients:\n" +
             "1. Print list\n" +
@@ -33,7 +46,8 @@ public class ViewClient extends View {
             choice = scanner.nextLine();
             switch (choice) {
                 case "1":
-                    controllerClient.printClientList(System.out::println);
+                    menuPrintClients();
+
                     break;
                 case "2":
                     menuAddClient();
@@ -55,6 +69,13 @@ public class ViewClient extends View {
             }
 
         } while (!choice.equals("0"));
+    }
+
+    public void menuPrintClients(){
+        String[] clients = controllerClient.clientListToStringArray();
+        for (String c: clients){
+            System.out.println(c);
+        }
     }
 
     public void menuSortClients() {
