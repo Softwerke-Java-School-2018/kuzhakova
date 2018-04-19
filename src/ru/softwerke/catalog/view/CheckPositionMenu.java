@@ -1,4 +1,4 @@
 package ru.softwerke.catalog.view;
 
-public class ViewCheckPosition {
+public class CheckPositionMenu {
 }

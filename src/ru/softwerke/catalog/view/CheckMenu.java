@@ -1,11 +1,10 @@
 package ru.softwerke.catalog.view;
 
 import ru.softwerke.catalog.controller.ControllerCheck;
-import java.util.Scanner;
 
-public class ViewCheck extends View {
+public class CheckMenu extends MainMenu {
     ControllerCheck controllerCheck = new ControllerCheck();
-    Scanner scanner = new Scanner(System.in);
+
     public static String MENU_CHECK = "Checks:\n" +
             "1. Print list\n" +
             "2. Add to list\n" +
@@ -13,22 +12,22 @@ public class ViewCheck extends View {
             "4. Find check\n" +
             "5. Sort check\n" +
             "0. Back";
-    public static ViewCheck instance;
+    public static CheckMenu instance;
 
-    private ViewCheck() {
+    private CheckMenu() {
     }
 
-    public static ViewCheck getInstance() {
+    public static CheckMenu getInstance() {
         if (instance == null)
-            synchronized (ViewCheck.class) {
+            synchronized (CheckMenu.class) {
                 if (instance == null)
-                    instance = new ViewCheck();
+                    instance = new CheckMenu();
             }
         return instance;
     }
 
     public void menuChecks() {
-        System.out.println(MENU_CHECK);
+        InputOutput.printLine(MENU_CHECK);
         String choice = scanner.nextLine();
         do {
             switch (choice) {

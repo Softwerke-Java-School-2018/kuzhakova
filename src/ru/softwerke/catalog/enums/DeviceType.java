@@ -1,5 +1,5 @@
-package ru.softwerke.enums;
+package ru.softwerke.catalog.enums;
 
 public enum DeviceType {
-    PHONE, TABLET, PLAYER, LAPTOP;
+    PHONE, TABLET, PLAYER, LAPTOP
 }

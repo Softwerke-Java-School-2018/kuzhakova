@@ -4,11 +4,11 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class View {
+public class MainMenu {
     Scanner scanner = new Scanner(System.in);
-    ViewClient viewClient;
-    ViewDevice viewDevice;
-    ViewCheck viewCheck;
+    ClientMenu clientMenu;
+    DeviceMenu viewDevice;
+    CheckMenu viewCheck;
 
     public final String MAIN_MENU = "Menu\n" +
             "1. Clients\n" +
@@ -20,16 +20,16 @@ public class View {
             "2. Descending\n";
 
     public void menu() {
-        viewClient = ViewClient.getInstance();
-        viewDevice = ViewDevice.getInstance();
-        viewCheck = ViewCheck.getInstance();
+        clientMenu = ClientMenu.getInstance();
+        viewDevice = DeviceMenu.getInstance();
+        viewCheck = CheckMenu.getInstance();
         String choice;
         do {
-            System.out.println(MAIN_MENU);
+            InputOutput.printLine(MAIN_MENU);
             choice = scanner.nextLine();
             switch (choice) {
                 case "1":
-                    viewClient.menu();
+                    clientMenu.menu();
                     break;
                 case "2":
                     viewDevice.menu();
@@ -38,11 +38,11 @@ public class View {
                     viewCheck.menuChecks();
                     break;
                 case "0":
-                    System.out.println("Goodbye!");
+                    InputOutput.printLine("Goodbye!");
                     System.exit(0);
                     break;
                 default:
-                    System.out.println("Input error.");
+                    InputOutput.printLine("Input error.");
                     break;
             }
 

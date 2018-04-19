@@ -6,11 +6,9 @@ import ru.softwerke.catalog.enums.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Scanner;
 
-public class ViewDevice extends View {
-    public static ViewDevice instance;
-    Scanner scanner = new Scanner(System.in);
+public class DeviceMenu extends MainMenu {
+    public static DeviceMenu instance;
     private ControllerDevice controllerDevice = new ControllerDevice();
     private Manufacturer manufacturer;
     private Color color;
@@ -26,14 +24,14 @@ public class ViewDevice extends View {
             "5. Sort device\n" +
             "0. Back";
 
-    private ViewDevice() {
+    private DeviceMenu() {
     }
 
-    public static ViewDevice getInstance() {
+    public static DeviceMenu getInstance() {
         if (instance == null)
-            synchronized (ViewDevice.class) {
+            synchronized (DeviceMenu.class) {
                 if (instance == null)
-                    instance = new ViewDevice();
+                    instance = new DeviceMenu();
             }
         return instance;
     }
@@ -42,14 +40,14 @@ public class ViewDevice extends View {
     public void menu() {
         String choice;
         do {
-            System.out.println(MENU_DEVICE);
+            InputOutput.printLine(MENU_DEVICE);
             choice = scanner.nextLine();
             switch (choice) {
                 case "1":
                     //controllerDevice.printDeviceList();
                     break;
                 case "2":
-                    if (menuAddDevice()) System.out.println("Device successfully added.");
+                    if (menuAddDevice()) InputOutput.printLine("Device successfully added.");
                     break;
                 case "3":
                     break;
@@ -65,31 +63,31 @@ public class ViewDevice extends View {
     }
 
     public void toEnterDataOfDevice() {
-        System.out.println("Enter manufacturer of device:");
+        InputOutput.printLine("Enter manufacturer of device:");
         String manufacturerString = scanner.nextLine();
         manufacturer = Manufacturer.valueOf(manufacturerString.toUpperCase());
 
-        System.out.println("Enter color of device:");
+        InputOutput.printLine("Enter color of device:");
         String colorString = scanner.nextLine();
         color = Color.valueOf(colorString.toUpperCase());
 
-        System.out.println("Enter date of release (dd/mm/yyyy):");
+        InputOutput.printLine("Enter date of release (dd/mm/yyyy):");
         String enterReleaseDate = scanner.nextLine();
         while (!checkEnterDateWithRegExp(enterReleaseDate)) {
-            System.out.println("Wrong enter! Enter date:");
+            InputOutput.printLine("Wrong enter! Enter date:");
             enterReleaseDate = scanner.nextLine();
         }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         releaseDate = LocalDate.parse(enterReleaseDate, formatter);
 
-        System.out.println("Enter type of device:");
+        InputOutput.printLine("Enter type of device:");
         String typeString = scanner.nextLine();
         deviceType = DeviceType.valueOf(typeString.toUpperCase());
 
-        System.out.println("Enter price of device:");
+        InputOutput.printLine("Enter price of device:");
         price = new BigDecimal(scanner.nextLine());
 
-        System.out.println("Enter model of device:");
+        InputOutput.printLine("Enter model of device:");
         model = scanner.nextLine().toUpperCase();
     }
 

@@ -1,4 +1,4 @@
-package ru.softwerke.entities;
+package ru.softwerke.catalog.entities;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -9,6 +9,12 @@ public class Check {
     private int idClient;
     private LocalDate dateSale;
     private BigDecimal totalSum;
+
+    public Check(LocalDate dateSale, BigDecimal totalSum) {
+        this.idClient = idClient;
+        this.dateSale = dateSale;
+        this.totalSum = totalSum;
+    }
 
     public Check(int idClient, LocalDate dateSale, BigDecimal totalSum) {
         this.id = ++COUNT;
@@ -31,10 +37,6 @@ public class Check {
 
     public BigDecimal getTotalSum() {
         return totalSum;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public void setIdClient(int idClient) {

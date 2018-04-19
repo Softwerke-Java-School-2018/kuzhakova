@@ -4,23 +4,22 @@ import ru.softwerke.catalog.controller.ControllerClient;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Scanner;
 
-public class ViewClient extends View {
-    Scanner scanner = new Scanner(System.in);
+public class ClientMenu extends MainMenu {
     private ControllerClient controllerClient = new ControllerClient();
     private LocalDate birthDate;
     private String fName, lName, enterBirthDate;
-    public static ViewClient instance;
+    public static ClientMenu instance;
+    DateTimeFormatter formatter;
 
-    private ViewClient() {
+    private ClientMenu() {
     }
 
-    public static ViewClient getInstance() {
+    public static ClientMenu getInstance() {
         if (instance == null)
-            synchronized (ViewClient.class) {
+            synchronized (ClientMenu.class) {
                 if (instance == null)
-                    instance = new ViewClient();
+                    instance = new ClientMenu();
             }
         return instance;
     }
@@ -42,12 +41,11 @@ public class ViewClient extends View {
     public void menu() {
         String choice;
         do {
-            System.out.println(MENU_CLIENT);
+            InputOutput.printLine(MENU_CLIENT);
             choice = scanner.nextLine();
             switch (choice) {
                 case "1":
                     menuPrintClients();
-
                     break;
                 case "2":
                     menuAddClient();
@@ -64,7 +62,7 @@ public class ViewClient extends View {
                 case "0":
                     break;
                 default:
-                    System.out.println("Invalid input.");
+                    InputOutput.printLine("Invalid input.");
                     break;
             }
 
@@ -74,43 +72,43 @@ public class ViewClient extends View {
     public void menuPrintClients(){
         String[] clients = controllerClient.clientListToStringArray();
         for (String c: clients){
-            System.out.println(c);
+            InputOutput.printLine(c);
         }
     }
 
     public void menuSortClients() {
-        Scanner scanInt = new Scanner(System.in);
-        System.out.println(MENU_SORT_CLIENTS);
-        int what = scanInt.nextInt();
-        System.out.println(MENU_HOW_SORT);
-        int how = scanInt.nextInt();
+        InputOutput.printLine(MENU_SORT_CLIENTS);
+        int what = InputOutput.readInt();
+        InputOutput.printLine(MENU_HOW_SORT);
+        int how = InputOutput.readInt();
         controllerClient.sort(what, how);
     }
 
     public void enterData() {
         birthDate = null;
-        System.out.println("Enter first name:");
+        InputOutput.printLine("Enter first name:");
         fName = scanner.nextLine();
-        System.out.println("Enter last name:");
+        InputOutput.printLine("Enter last name:");
         lName = scanner.nextLine();
-        System.out.println("Enter date of birth (dd/mm/yyyy):");
+        InputOutput.printLine("Enter date of birth (dd/mm/yyyy):");
         enterBirthDate = scanner.nextLine();
         Boolean isEmptyDate = enterBirthDate.equals("");
         if (!isEmptyDate) {
             while (!checkEnterDateWithRegExp(enterBirthDate)) {
-                System.out.println("Wrong enter! Enter date:");
+                InputOutput.printLine("Wrong enter! Enter date:");
                 enterBirthDate = scanner.nextLine();
             }
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             birthDate = LocalDate.parse(enterBirthDate, formatter);
         }
+        else birthDate = LocalDate.MAX;
     }
 
     public void menuAddClient() {
         enterData();
         if (controllerClient.addClient(fName, lName, birthDate))
-            System.out.println("Client successfully added.");
-        else System.out.println("Invalid input. The information was not completely entered.");
+            InputOutput.printLine("Client successfully added.");
+        else InputOutput.printLine("Invalid input. The information was not completely entered.");
     }
 
 
@@ -118,17 +116,17 @@ public class ViewClient extends View {
         enterData();
         if (!controllerClient.deleteClient(fName, lName, birthDate)) {
             if (!controllerClient.printFoundClientList(fName, lName, birthDate)) {
-                System.out.println("Removal did not happen.");
+                InputOutput.printLine("Removal did not happen.");
                 return;
             }
         }
-        System.out.println("Client successfully deleted.");
+        InputOutput.printLine("Client successfully deleted.");
     }
 
     public void menuFindClient() {
         enterData();
         if (controllerClient.findClient(fName, lName, birthDate) == null &&
                 controllerClient.findSimilarClients(fName, lName, birthDate) == false)
-            System.out.println("No clients found for this query.");
+            InputOutput.printLine("No clients found for this query.");
     }
 }

@@ -1,12 +1,16 @@
-package ru.softwerke.entities;
+package ru.softwerke.catalog.entities;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-// position
 public class CheckPosition {
+    private static int COUNT = 0;
     private int idClient;
     private int idDevice;
     private int numberOf;
+
+    public CheckPosition(int idDevice, int numberOf) {
+        this.idClient = ++COUNT;
+        this.idDevice = idDevice;
+        this.numberOf = numberOf;
+    }
 
     public CheckPosition(int idClient, int idDevice, int numberOf) {
         this.idClient = idClient;

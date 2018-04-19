@@ -1,4 +1,4 @@
-package ru.softwerke.catalog.Model;
+package ru.softwerke.catalog.model;
 
 import ru.softwerke.catalog.entities.CheckPosition;
 

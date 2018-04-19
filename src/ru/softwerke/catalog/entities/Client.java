@@ -1,4 +1,4 @@
-package ru.softwerke.entities;
+package ru.softwerke.catalog.entities;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -48,10 +48,6 @@ public class Client {
         this.lastName = lastName;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
     }
@@ -61,16 +57,16 @@ public class Client {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Client client = (Client) o;
-        return  Objects.equals(firstName, client.firstName) &&
+        return Objects.equals(firstName, client.firstName) &&
                 Objects.equals(lastName, client.lastName) &&
                 Objects.equals(birthDate, client.birthDate);
     }
 
-
     @Override
     public String toString() {
-        return "Client: " + firstName +
-                " " + lastName +
-                ", " + birthDate;
+        String stringBirthDate = "";
+        if (birthDate != null) stringBirthDate = birthDate.toString();
+        return "Client:" + id + ". " + firstName + " " + lastName + ", " + stringBirthDate;
     }
+
 }
