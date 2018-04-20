@@ -28,7 +28,7 @@ public class CheckMenu extends MainMenu {
 
     public void menuChecks() {
         InputOutput.printLine(MENU_CHECK);
-        String choice = scanner.nextLine();
+        String choice = InputOutput.readLine();
         do {
             switch (choice) {
                 case "1":

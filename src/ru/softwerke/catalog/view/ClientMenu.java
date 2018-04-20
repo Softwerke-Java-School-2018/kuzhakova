@@ -42,7 +42,7 @@ public class ClientMenu extends MainMenu {
         String choice;
         do {
             InputOutput.printLine(MENU_CLIENT);
-            choice = scanner.nextLine();
+            choice = InputOutput.readLine();
             switch (choice) {
                 case "1":
                     menuPrintClients();
@@ -87,16 +87,16 @@ public class ClientMenu extends MainMenu {
     public void enterData() {
         birthDate = null;
         InputOutput.printLine("Enter first name:");
-        fName = scanner.nextLine();
+        fName = InputOutput.readLine();
         InputOutput.printLine("Enter last name:");
-        lName = scanner.nextLine();
+        lName = InputOutput.readLine();
         InputOutput.printLine("Enter date of birth (dd/mm/yyyy):");
-        enterBirthDate = scanner.nextLine();
+        enterBirthDate = InputOutput.readLine();
         Boolean isEmptyDate = enterBirthDate.equals("");
         if (!isEmptyDate) {
             while (!checkEnterDateWithRegExp(enterBirthDate)) {
                 InputOutput.printLine("Wrong enter! Enter date:");
-                enterBirthDate = scanner.nextLine();
+                enterBirthDate = InputOutput.readLine();
             }
             formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             birthDate = LocalDate.parse(enterBirthDate, formatter);

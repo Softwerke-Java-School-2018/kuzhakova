@@ -41,7 +41,7 @@ public class DeviceMenu extends MainMenu {
         String choice;
         do {
             InputOutput.printLine(MENU_DEVICE);
-            choice = scanner.nextLine();
+            choice = InputOutput.readLine();
             switch (choice) {
                 case "1":
                     //controllerDevice.printDeviceList();
@@ -64,31 +64,31 @@ public class DeviceMenu extends MainMenu {
 
     public void toEnterDataOfDevice() {
         InputOutput.printLine("Enter manufacturer of device:");
-        String manufacturerString = scanner.nextLine();
+        String manufacturerString = InputOutput.readLine();
         manufacturer = Manufacturer.valueOf(manufacturerString.toUpperCase());
 
         InputOutput.printLine("Enter color of device:");
-        String colorString = scanner.nextLine();
+        String colorString = InputOutput.readLine();
         color = Color.valueOf(colorString.toUpperCase());
 
         InputOutput.printLine("Enter date of release (dd/mm/yyyy):");
-        String enterReleaseDate = scanner.nextLine();
+        String enterReleaseDate = InputOutput.readLine();
         while (!checkEnterDateWithRegExp(enterReleaseDate)) {
             InputOutput.printLine("Wrong enter! Enter date:");
-            enterReleaseDate = scanner.nextLine();
+            enterReleaseDate = InputOutput.readLine();
         }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         releaseDate = LocalDate.parse(enterReleaseDate, formatter);
 
         InputOutput.printLine("Enter type of device:");
-        String typeString = scanner.nextLine();
+        String typeString = InputOutput.readLine();
         deviceType = DeviceType.valueOf(typeString.toUpperCase());
 
         InputOutput.printLine("Enter price of device:");
-        price = new BigDecimal(scanner.nextLine());
+        price = InputOutput.readBigDecimal();
 
         InputOutput.printLine("Enter model of device:");
-        model = scanner.nextLine().toUpperCase();
+        model = InputOutput.readLine().toUpperCase();
     }
 
     public Boolean menuAddDevice() {

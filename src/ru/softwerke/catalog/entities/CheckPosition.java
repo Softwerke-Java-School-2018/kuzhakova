@@ -1,21 +1,41 @@
 package ru.softwerke.catalog.entities;
 
 public class CheckPosition {
-    private static int COUNT = 0;
     private int idClient;
     private int idDevice;
-    private int numberOf;
+    private int count;
 
-    public CheckPosition(int idDevice, int numberOf) {
-        this.idClient = ++COUNT;
-        this.idDevice = idDevice;
-        this.numberOf = numberOf;
+    private CheckPosition() {
     }
 
-    public CheckPosition(int idClient, int idDevice, int numberOf) {
-        this.idClient = idClient;
-        this.idDevice = idDevice;
-        this.numberOf = numberOf;
+    public static CheckPositionBuilder newCheckPositionBuilder() {
+        return new CheckPosition().new CheckPositionBuilder();
+    }
+
+    public class CheckPositionBuilder {
+
+        private CheckPositionBuilder() {
+        }
+
+        public CheckPositionBuilder setIdClient(int idClient) {
+            CheckPosition.this.idClient = idClient;
+            return this;
+        }
+
+        public CheckPositionBuilder setIdDevice(int idDevice) {
+            CheckPosition.this.idDevice = idDevice;
+            return this;
+        }
+
+        public CheckPositionBuilder setCount(int count) {
+            CheckPosition.this.count = count;
+            return this;
+        }
+
+        public CheckPosition build() {
+            return CheckPosition.this;
+        }
+
     }
 
     public int getIdClient() {
@@ -26,19 +46,8 @@ public class CheckPosition {
         return idDevice;
     }
 
-    public int getNumberOf() {
-        return numberOf;
+    public int getCount() {
+        return count;
     }
 
-    public void setIdClient(int idClient) {
-        this.idClient = idClient;
-    }
-
-    public void setIdDevice(int idDevice) {
-        this.idDevice = idDevice;
-    }
-
-    public void setNumberOf(int numberOf) {
-        this.numberOf = numberOf;
-    }
 }

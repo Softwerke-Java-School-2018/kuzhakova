@@ -49,8 +49,12 @@ public class ControllerClient {
 
     }
 
-    public Client findClient(String fName, String lName, LocalDate birthDate) {
-        Client c = modelClient.equalsClient(new Client(fName, lName, birthDate));
+    public Client findClient(String firstName, String lastName, LocalDate birthDate) {
+        Client c = modelClient.equalsClient(Client.newClientBuilder()
+                .setFirstName(firstName)
+                .setLastName(lastName)
+                .setBirthDate(birthDate)
+                .build());
         if (c != null) InputOutput.printLine(c.toString());
         return c;
     }
@@ -71,20 +75,29 @@ public class ControllerClient {
     }
 
     public boolean addClient(String firstName, String lastName, LocalDate birthDate) {
-        if (!(firstName.equals("") || lastName.equals("") || birthDate == null)) {
-            modelClient.addClient(new Client(firstName, lastName, birthDate));
+        if (!("".equals(firstName) || "".equals(lastName) || Objects.nonNull(birthDate))) {
+            modelClient.addClient(Client.newClientBuilder()
+                    .setFirstName(firstName)
+                    .setLastName(lastName)
+                    .setBirthDate(birthDate)
+                    .build());
             return true;
         }
         return false;
     }
 
     public boolean deleteClient(String firstName, String lastName, LocalDate birthDate) {
-        return modelClient.deleteClient(new Client(0, firstName, lastName, birthDate));
+        return modelClient.deleteClient(Client.newClientBuilder()
+                .setId(0)
+                .setFirstName(firstName)
+                .setLastName(lastName)
+                .setBirthDate(birthDate)
+                .build());
     }
 
     public void sort(int what, int how) {
         List<Client> sortClientList = modelClient.getStreamClientList().collect(Collectors.toList());
-        if (how == 2) Collections.sort(sortClientList, Collections.reverseOrder(modelClient.getComparator(what - 1)));
+        if (how == 2) Collections.sort(sortClientList, Collections.reverseOrder(modelClient.getComparator(what-1)));
         else Collections.sort(sortClientList, modelClient.getComparator(what - 1));
         for (Client c : sortClientList) {
             InputOutput.printLine(c.toString());

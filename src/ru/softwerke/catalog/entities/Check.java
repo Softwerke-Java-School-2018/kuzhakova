@@ -10,17 +10,11 @@ public class Check {
     private LocalDate dateSale;
     private BigDecimal totalSum;
 
-    public Check(LocalDate dateSale, BigDecimal totalSum) {
-        this.idClient = idClient;
-        this.dateSale = dateSale;
-        this.totalSum = totalSum;
+    private Check() {
     }
 
-    public Check(int idClient, LocalDate dateSale, BigDecimal totalSum) {
-        this.id = ++COUNT;
-        this.idClient = idClient;
-        this.dateSale = dateSale;
-        this.totalSum = totalSum;
+    public static CheckBuilder newCheckBuilder() {
+        return new Check().new CheckBuilder();
     }
 
     public int getId() {
@@ -39,15 +33,39 @@ public class Check {
         return totalSum;
     }
 
-    public void setIdClient(int idClient) {
-        this.idClient = idClient;
-    }
+    public class CheckBuilder {
 
-    public void setDateSale(LocalDate dateSale) {
-        this.dateSale = dateSale;
-    }
+        private CheckBuilder() {
+        }
 
-    public void setTotalSum(BigDecimal totalSum) {
-        this.totalSum = totalSum;
+        public CheckBuilder setId(int id) {
+            Check.this.id = id;
+            return this;
+        }
+
+        public CheckBuilder setId() {
+            Check.this.id = ++COUNT;
+            return this;
+        }
+
+        public CheckBuilder setIdClient(int idClient) {
+            Check.this.idClient = idClient;
+            return this;
+        }
+
+        public CheckBuilder setDateSale(LocalDate dateSale) {
+            Check.this.dateSale = dateSale;
+            return this;
+        }
+
+        public CheckBuilder setTotalSum(BigDecimal totalSum) {
+            Check.this.totalSum = totalSum;
+            return this;
+        }
+
+        public Check build() {
+            return Check.this;
+        }
+
     }
 }

@@ -1,6 +1,7 @@
 package ru.softwerke.catalog.view;
 
 import java.io.*;
+import java.math.BigDecimal;
 
 public class InputOutput {
     private static BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
@@ -28,6 +29,16 @@ public class InputOutput {
         while (true) {
             try {
                 return Integer.parseInt(readLine());
+            } catch (NumberFormatException e) {
+                printLine("Input error.");
+            }
+        }
+    }
+
+    public static BigDecimal readBigDecimal() {
+        while (true) {
+            try {
+                return new BigDecimal(readLine());
             } catch (NumberFormatException e) {
                 printLine("Input error.");
             }

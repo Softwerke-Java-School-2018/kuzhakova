@@ -29,7 +29,15 @@ public class ControllerDevice {
                              DeviceType deviceType,
                              BigDecimal price) {
         try {
-            modelDevice.getDeviceList().add(new Device(modelOfDevice, manufacturer, color, releaseDate, deviceType, price));
+            Device device = Device.newDeviceBuilder()
+                    .setModelOfDevice(modelOfDevice)
+                    .setManufacturer(manufacturer)
+                    .setColor(color)
+                    .setReleaseDate(releaseDate)
+                    .setDeviceType(deviceType)
+                    .setPrice(price)
+                    .build();
+            modelDevice.getDeviceList().add(device);
             return true;
         } catch (Exception e) {
             return false;
@@ -43,7 +51,16 @@ public class ControllerDevice {
                                 DeviceType deviceType,
                                 BigDecimal price) {
         try {
-            return modelDevice.getDeviceList().remove(new Device(0, modelOfDevice, manufacturer, color, releaseDate, deviceType, price));
+            Device device = Device.newDeviceBuilder()
+                    .setId(0)
+                    .setModelOfDevice(modelOfDevice)
+                    .setManufacturer(manufacturer)
+                    .setColor(color)
+                    .setReleaseDate(releaseDate)
+                    .setDeviceType(deviceType)
+                    .setPrice(price)
+                    .build();
+            return modelDevice.getDeviceList().remove(device);
         } catch (Exception e) {
             InputOutput.printLine("Could not remove device.");
             return false;

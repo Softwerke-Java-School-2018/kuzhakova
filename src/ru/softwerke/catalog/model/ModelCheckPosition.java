@@ -11,4 +11,5 @@ public class ModelCheckPosition {
     public List<CheckPosition> getCheckPositions() {
         return checkPositions;
     }
+
 }

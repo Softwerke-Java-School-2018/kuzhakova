@@ -16,39 +16,16 @@ public class Device {
     private DeviceType deviceType;
     private BigDecimal price;
 
-    public Device(String modelOfDevice,
-                  Manufacturer manufacturer,
-                  Color color,
-                  LocalDate releaseDate,
-                  DeviceType deviceType,
-                  BigDecimal price) {
-        this.id = ++COUNT;
-        this.modelOfDevice = modelOfDevice;
-        this.manufacturer = manufacturer;
-        this.color = color;
-        this.releaseDate = releaseDate;
-        this.deviceType = deviceType;
-        this.price = price;
+    private Device() {
     }
 
-    public Device(int id, String modelOfDevice,
-                  Manufacturer manufacturer,
-                  Color color,
-                  LocalDate releaseDate,
-                  DeviceType deviceType,
-                  BigDecimal price) {
-        this.id = id;
-        this.modelOfDevice = modelOfDevice;
-        this.manufacturer = manufacturer;
-        this.color = color;
-        this.releaseDate = releaseDate;
-        this.deviceType = deviceType;
-        this.price = price;
+    public static DeviceBuilder newDeviceBuilder() {
+        return new Device().new DeviceBuilder();
     }
 
     @Override
     public String toString() {
-        return "Device:" + deviceType + " " + manufacturer + " " + modelOfDevice + " " + color;
+        return "Device: " + deviceType + " " + manufacturer + " " + modelOfDevice + " " + color;
     }
 
     public int getId() {
@@ -79,30 +56,6 @@ public class Device {
         return price;
     }
 
-    public void setModelOfDevice(String modelOfDevice) {
-        this.modelOfDevice = modelOfDevice;
-    }
-
-    public void setManufacturer(Manufacturer manufacturer) {
-        this.manufacturer = manufacturer;
-    }
-
-    public void setColor(Color color) {
-        this.color = color;
-    }
-
-    public void setReleaseDate(LocalDate releaseDate) {
-        this.releaseDate = releaseDate;
-    }
-
-    public void setDeviceType(DeviceType deviceType) {
-        this.deviceType = deviceType;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -114,5 +67,56 @@ public class Device {
                 Objects.equals(releaseDate, device.releaseDate) &&
                 deviceType == device.deviceType &&
                 Objects.equals(price, device.price);
+    }
+
+    public class DeviceBuilder {
+
+        private DeviceBuilder() {
+        }
+
+        public DeviceBuilder setId(int id) {
+            Device.this.id = id;
+            return this;
+        }
+
+        public DeviceBuilder setId() {
+            Device.this.id = ++COUNT;
+            return this;
+        }
+
+        public DeviceBuilder setColor(Color color) {
+            Device.this.color = color;
+            return this;
+        }
+
+        public DeviceBuilder setModelOfDevice(String modelOfDevice) {
+            Device.this.modelOfDevice = modelOfDevice;
+            return this;
+        }
+
+        public DeviceBuilder setManufacturer(Manufacturer manufacturer) {
+            Device.this.manufacturer = manufacturer;
+            return this;
+        }
+
+        public DeviceBuilder setReleaseDate(LocalDate releaseDate) {
+            Device.this.releaseDate = releaseDate;
+            return this;
+        }
+
+        public DeviceBuilder setDeviceType(DeviceType deviceType) {
+            Device.this.deviceType = deviceType;
+            return this;
+        }
+
+        public DeviceBuilder setPrice(BigDecimal price) {
+            Device.this.price = price;
+            return this;
+        }
+
+        public Device build() {
+            return Device.this;
+        }
+
     }
 }

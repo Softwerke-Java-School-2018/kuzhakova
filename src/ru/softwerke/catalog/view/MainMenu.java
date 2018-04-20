@@ -1,11 +1,9 @@
 package ru.softwerke.catalog.view;
 
-import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class MainMenu {
-    Scanner scanner = new Scanner(System.in);
     ClientMenu clientMenu;
     DeviceMenu viewDevice;
     CheckMenu viewCheck;
@@ -26,7 +24,7 @@ public class MainMenu {
         String choice;
         do {
             InputOutput.printLine(MAIN_MENU);
-            choice = scanner.nextLine();
+            choice = InputOutput.readLine();
             switch (choice) {
                 case "1":
                     clientMenu.menu();

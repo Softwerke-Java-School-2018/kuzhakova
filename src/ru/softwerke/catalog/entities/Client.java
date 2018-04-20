@@ -10,18 +10,11 @@ public class Client {
     private String lastName;
     private LocalDate birthDate;
 
-    public Client(String firstName, String lastName, LocalDate birthDate) {
-        this.id = ++COUNT;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.birthDate = birthDate;
+    private Client() {
     }
 
-    public Client(int id, String firstName, String lastName, LocalDate birthDate) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.birthDate = birthDate;
+    public static ClientBuilder newClientBuilder() {
+        return new Client().new ClientBuilder();
     }
 
     public String getFirstName() {
@@ -40,18 +33,6 @@ public class Client {
         return birthDate;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public void setBirthDate(LocalDate birthDate) {
-        this.birthDate = birthDate;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -66,7 +47,43 @@ public class Client {
     public String toString() {
         String stringBirthDate = "";
         if (birthDate != null) stringBirthDate = birthDate.toString();
-        return "Client:" + id + ". " + firstName + " " + lastName + ", " + stringBirthDate;
+        return "Client: " + id + ". " + firstName + " " + lastName + ", " + stringBirthDate;
+    }
+
+    public class ClientBuilder {
+
+        private ClientBuilder() {
+        }
+
+        public ClientBuilder setId(int id) {
+            Client.this.id = id;
+            return this;
+        }
+
+        public ClientBuilder setId() {
+            Client.this.id = ++COUNT;
+            return this;
+        }
+
+        public ClientBuilder setFirstName(String firstName) {
+            Client.this.firstName = firstName;
+            return this;
+        }
+
+        public ClientBuilder setLastName(String lastName) {
+            Client.this.lastName = lastName;
+            return this;
+        }
+
+        public ClientBuilder setBirthDate(LocalDate birthDate) {
+            Client.this.birthDate = birthDate;
+            return this;
+        }
+
+        public Client build() {
+            return Client.this;
+        }
+
     }
 
 }
