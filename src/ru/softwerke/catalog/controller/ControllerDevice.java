@@ -30,6 +30,7 @@ public class ControllerDevice {
                              BigDecimal price) {
         try {
             Device device = Device.newDeviceBuilder()
+                    .setId()
                     .setModelOfDevice(modelOfDevice)
                     .setManufacturer(manufacturer)
                     .setColor(color)

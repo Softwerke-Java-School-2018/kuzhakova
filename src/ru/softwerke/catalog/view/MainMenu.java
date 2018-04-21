@@ -6,12 +6,12 @@ import java.util.regex.Pattern;
 public class MainMenu {
     ClientMenu clientMenu;
     DeviceMenu viewDevice;
-    CheckMenu viewCheck;
+    InvoiceMenu invoiceMenu;
 
     public final String MAIN_MENU = "Menu\n" +
             "1. Clients\n" +
             "2. Devices\n" +
-            "3. Checks\n" +
+            "3. Invoices\n" +
             "0. Exit\n";
     public final String MENU_HOW_SORT = "Sort:\n" +
             "1. Ascending\n" +
@@ -20,7 +20,7 @@ public class MainMenu {
     public void menu() {
         clientMenu = ClientMenu.getInstance();
         viewDevice = DeviceMenu.getInstance();
-        viewCheck = CheckMenu.getInstance();
+        invoiceMenu = InvoiceMenu.getInstance();
         String choice;
         do {
             InputOutput.printLine(MAIN_MENU);
@@ -33,7 +33,7 @@ public class MainMenu {
                     viewDevice.menu();
                     break;
                 case "3":
-                    viewCheck.menuChecks();
+                    invoiceMenu.menuInvoices();
                     break;
                 case "0":
                     InputOutput.printLine("Goodbye!");

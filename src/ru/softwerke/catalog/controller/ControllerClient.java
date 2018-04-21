@@ -51,6 +51,7 @@ public class ControllerClient {
 
     public Client findClient(String firstName, String lastName, LocalDate birthDate) {
         Client c = modelClient.equalsClient(Client.newClientBuilder()
+                .setId()
                 .setFirstName(firstName)
                 .setLastName(lastName)
                 .setBirthDate(birthDate)
@@ -75,8 +76,9 @@ public class ControllerClient {
     }
 
     public boolean addClient(String firstName, String lastName, LocalDate birthDate) {
-        if (!("".equals(firstName) || "".equals(lastName) || Objects.nonNull(birthDate))) {
+        if (!("".equals(firstName) || "".equals(lastName) || Objects.isNull(birthDate))) {
             modelClient.addClient(Client.newClientBuilder()
+                    .setId()
                     .setFirstName(firstName)
                     .setLastName(lastName)
                     .setBirthDate(birthDate)

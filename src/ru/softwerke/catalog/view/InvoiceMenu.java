@@ -1,33 +1,33 @@
 package ru.softwerke.catalog.view;
 
-import ru.softwerke.catalog.controller.ControllerCheck;
+import ru.softwerke.catalog.controller.ControllerInvoice;
 
-public class CheckMenu extends MainMenu {
-    ControllerCheck controllerCheck = new ControllerCheck();
+public class InvoiceMenu extends MainMenu {
+    ControllerInvoice controllerInvoice = new ControllerInvoice();
 
-    public static String MENU_CHECK = "Checks:\n" +
+    public static String MENU_INVOICE = "Invoices:\n" +
             "1. Print list\n" +
             "2. Add to list\n" +
-            "3. Delete check\n" +
-            "4. Find check\n" +
-            "5. Sort check\n" +
+            "3. Delete invoice\n" +
+            "4. Find invoice\n" +
+            "5. Sort invoice\n" +
             "0. Back";
-    public static CheckMenu instance;
+    public static InvoiceMenu instance;
 
-    private CheckMenu() {
+    private InvoiceMenu() {
     }
 
-    public static CheckMenu getInstance() {
+    public static InvoiceMenu getInstance() {
         if (instance == null)
-            synchronized (CheckMenu.class) {
+            synchronized (InvoiceMenu.class) {
                 if (instance == null)
-                    instance = new CheckMenu();
+                    instance = new InvoiceMenu();
             }
         return instance;
     }
 
-    public void menuChecks() {
-        InputOutput.printLine(MENU_CHECK);
+    public void menuInvoices() {
+        InputOutput.printLine(MENU_INVOICE);
         String choice = InputOutput.readLine();
         do {
             switch (choice) {
