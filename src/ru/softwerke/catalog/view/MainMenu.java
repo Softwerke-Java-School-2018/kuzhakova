@@ -1,11 +1,10 @@
 package ru.softwerke.catalog.view;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import ru.softwerke.catalog.view.io.InputOutput;
 
 public class MainMenu {
     ClientMenu clientMenu;
-    DeviceMenu viewDevice;
+    DeviceMenu deviceMenu;
     InvoiceMenu invoiceMenu;
 
     public final String MAIN_MENU = "Menu\n" +
@@ -15,11 +14,12 @@ public class MainMenu {
             "0. Exit\n";
     public final String MENU_HOW_SORT = "Sort:\n" +
             "1. Ascending\n" +
-            "2. Descending\n";
+            "2. Descending\n" +
+            "0. Back";
 
     public void menu() {
         clientMenu = ClientMenu.getInstance();
-        viewDevice = DeviceMenu.getInstance();
+        deviceMenu = DeviceMenu.getInstance();
         invoiceMenu = InvoiceMenu.getInstance();
         String choice;
         do {
@@ -30,7 +30,7 @@ public class MainMenu {
                     clientMenu.menu();
                     break;
                 case "2":
-                    viewDevice.menu();
+                    deviceMenu.menu();
                     break;
                 case "3":
                     invoiceMenu.menuInvoices();
@@ -40,16 +40,11 @@ public class MainMenu {
                     System.exit(0);
                     break;
                 default:
-                    InputOutput.printLine("Input error.");
+                    InputOutput.printLine("Invalid input.");
                     break;
             }
 
         } while (!choice.equals("0"));
     }
 
-    public boolean checkEnterDateWithRegExp(String dateString) {
-        Pattern p = Pattern.compile("(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\\d\\d");
-        Matcher m = p.matcher(dateString);
-        return m.matches();
-    }
 }

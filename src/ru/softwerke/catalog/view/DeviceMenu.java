@@ -1,15 +1,18 @@
 package ru.softwerke.catalog.view;
 
-import ru.softwerke.catalog.controller.ControllerDevice;
-import ru.softwerke.catalog.enums.*;
+import ru.softwerke.catalog.controller.DeviceController;
+import ru.softwerke.catalog.model.enums.*;
+import ru.softwerke.catalog.view.io.IOUtils;
+import ru.softwerke.catalog.view.io.InputOutput;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 public class DeviceMenu extends MainMenu {
     public static DeviceMenu instance;
-    private ControllerDevice controllerDevice = new ControllerDevice();
+    private DeviceController deviceController = new DeviceController();
     private Manufacturer manufacturer;
     private Color color;
     private LocalDate releaseDate;
@@ -28,11 +31,12 @@ public class DeviceMenu extends MainMenu {
     }
 
     public static DeviceMenu getInstance() {
-        if (instance == null)
+        if (instance == null) {
             synchronized (DeviceMenu.class) {
                 if (instance == null)
                     instance = new DeviceMenu();
             }
+        }
         return instance;
     }
 
@@ -44,14 +48,16 @@ public class DeviceMenu extends MainMenu {
             choice = InputOutput.readLine();
             switch (choice) {
                 case "1":
-                    //controllerDevice.printDeviceList();
+                    menuPrintDevices();
                     break;
                 case "2":
-                    if (menuAddDevice()) InputOutput.printLine("Device successfully added.");
+                    menuAddDevice();
                     break;
                 case "3":
+                    menuDeleteDevice();
                     break;
                 case "4":
+                    menuFindDevice();
                     break;
                 case "0":
                     break;
@@ -62,38 +68,68 @@ public class DeviceMenu extends MainMenu {
         } while (!choice.equals("0"));
     }
 
-    public void toEnterDataOfDevice() {
+    public void enterDataOfDevice() {
         InputOutput.printLine("Enter manufacturer of device:");
-        String manufacturerString = InputOutput.readLine();
-        manufacturer = Manufacturer.valueOf(manufacturerString.toUpperCase());
+        manufacturer = IOUtils.lookupEnum(Manufacturer.class);
 
         InputOutput.printLine("Enter color of device:");
-        String colorString = InputOutput.readLine();
-        color = Color.valueOf(colorString.toUpperCase());
+        color = IOUtils.lookupEnum(Color.class);
 
         InputOutput.printLine("Enter date of release (dd/mm/yyyy):");
         String enterReleaseDate = InputOutput.readLine();
-        while (!checkEnterDateWithRegExp(enterReleaseDate)) {
+        while (!IOUtils.checkEnterDateWithRegExp(enterReleaseDate)) {
             InputOutput.printLine("Wrong enter! Enter date:");
             enterReleaseDate = InputOutput.readLine();
         }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         releaseDate = LocalDate.parse(enterReleaseDate, formatter);
 
-        InputOutput.printLine("Enter type of device:");
-        String typeString = InputOutput.readLine();
-        deviceType = DeviceType.valueOf(typeString.toUpperCase());
+        InputOutput.printLine("Enter type of device (laptop, phone, player, tablet):");
+        deviceType = IOUtils.lookupEnum(DeviceType.class);
 
         InputOutput.printLine("Enter price of device:");
         price = InputOutput.readBigDecimal();
 
         InputOutput.printLine("Enter model of device:");
-        model = InputOutput.readLine().toUpperCase();
+        model = InputOutput.readLine();
     }
 
-    public Boolean menuAddDevice() {
-        toEnterDataOfDevice();
-        return controllerDevice.addDevice(model, manufacturer, color, releaseDate, deviceType, price);
+    public void enterDataToFind() {
+    }
+
+
+    public void menuPrintDevices() {
+        InputOutput.printLine("type | date of release | price | color| manufacturer, model ");
+        InputOutput.printLine("-----------------------------------------------------------------------");
+        String[] devices = deviceController.deviceListToStringArray();
+        for (String c : devices) {
+            InputOutput.printLine(c);
+        }
+    }
+
+    public void menuAddDevice() {
+        enterDataOfDevice();
+        if (deviceController.addDevice(model, manufacturer, color, releaseDate, deviceType, price)) {
+            InputOutput.printLine("Device successfully added.");
+        } else InputOutput.printLine("Could not add device.");
+    }
+
+    public void menuDeleteDevice() {
+        enterDataOfDevice();
+        if (!deviceController.deleteDevice(model, manufacturer, color, releaseDate, deviceType, price)) {
+            if (!deviceController.printFoundDeviceList(model, manufacturer, color, releaseDate, deviceType, price)) {
+                InputOutput.printLine("Removal did not happen.");
+                return;
+            }
+        }
+        InputOutput.printLine("Device successfully deleted.");
+    }
+
+    public void menuFindDevice() {
+        enterDataOfDevice();
+        if (Objects.isNull(deviceController.findDevice(model, manufacturer, color, releaseDate, deviceType, price)) &&
+                deviceController.findSimilarDevices(model, manufacturer, color, releaseDate, deviceType, price) == false)
+            InputOutput.printLine("No devices found for this query.");
     }
 
 }

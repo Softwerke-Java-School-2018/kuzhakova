@@ -1,12 +1,14 @@
 package ru.softwerke.catalog.view;
 
-import ru.softwerke.catalog.controller.ControllerClient;
+import ru.softwerke.catalog.controller.ClientController;
+import ru.softwerke.catalog.view.io.IOUtils;
+import ru.softwerke.catalog.view.io.InputOutput;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class ClientMenu extends MainMenu {
-    private ControllerClient controllerClient = new ControllerClient();
+    private ClientController clientController = new ClientController();
     private LocalDate birthDate;
     private String fName, lName, enterBirthDate;
     public static ClientMenu instance;
@@ -16,11 +18,12 @@ public class ClientMenu extends MainMenu {
     }
 
     public static ClientMenu getInstance() {
-        if (instance == null)
+        if (instance == null) {
             synchronized (ClientMenu.class) {
                 if (instance == null)
                     instance = new ClientMenu();
             }
+        }
         return instance;
     }
 
@@ -69,9 +72,9 @@ public class ClientMenu extends MainMenu {
         } while (!choice.equals("0"));
     }
 
-    public void menuPrintClients(){
-        String[] clients = controllerClient.clientListToStringArray();
-        for (String c: clients){
+    public void menuPrintClients() {
+        String[] clients = clientController.clientListToStringArray();
+        for (String c : clients) {
             InputOutput.printLine(c);
         }
     }
@@ -79,10 +82,13 @@ public class ClientMenu extends MainMenu {
     public void menuSortClients() {
         InputOutput.printLine(MENU_SORT_CLIENTS);
         int what = InputOutput.readInt();
+        if (!IOUtils.isCorrectParameter(what, clientController.comparatorsCount())) return;
         InputOutput.printLine(MENU_HOW_SORT);
         int how = InputOutput.readInt();
-        controllerClient.sort(what, how);
+        if (!IOUtils.isCorrectParameter(how, 2)) return;
+        clientController.sort(what, how);
     }
+
 
     public void enterData() {
         birthDate = null;
@@ -92,21 +98,20 @@ public class ClientMenu extends MainMenu {
         lName = InputOutput.readLine();
         InputOutput.printLine("Enter date of birth (dd/mm/yyyy):");
         enterBirthDate = InputOutput.readLine();
-        Boolean isEmptyDate = enterBirthDate.equals("");
+        boolean isEmptyDate = enterBirthDate.equals("");
         if (!isEmptyDate) {
-            while (!checkEnterDateWithRegExp(enterBirthDate)) {
+            while (!IOUtils.checkEnterDateWithRegExp(enterBirthDate)) {
                 InputOutput.printLine("Wrong enter! Enter date:");
                 enterBirthDate = InputOutput.readLine();
             }
             formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             birthDate = LocalDate.parse(enterBirthDate, formatter);
-        }
-        else birthDate = LocalDate.MAX;
+        } else birthDate = LocalDate.MAX;
     }
 
     public void menuAddClient() {
         enterData();
-        if (controllerClient.addClient(fName, lName, birthDate))
+        if (clientController.addClient(fName, lName, birthDate))
             InputOutput.printLine("Client successfully added.");
         else InputOutput.printLine("Invalid input. The information was not completely entered.");
     }
@@ -114,8 +119,8 @@ public class ClientMenu extends MainMenu {
 
     public void menuDeleteClient() {
         enterData();
-        if (!controllerClient.deleteClient(fName, lName, birthDate)) {
-            if (!controllerClient.printFoundClientList(fName, lName, birthDate)) {
+        if (!clientController.deleteClient(fName, lName, birthDate)) {
+            if (!clientController.printFoundClientList(fName, lName, birthDate)) {
                 InputOutput.printLine("Removal did not happen.");
                 return;
             }
@@ -125,8 +130,8 @@ public class ClientMenu extends MainMenu {
 
     public void menuFindClient() {
         enterData();
-        if (controllerClient.findClient(fName, lName, birthDate) == null &&
-                controllerClient.findSimilarClients(fName, lName, birthDate) == false)
+        if (clientController.findClient(fName, lName, birthDate) == null &&
+                clientController.findSimilarClients(fName, lName, birthDate) == false)
             InputOutput.printLine("No clients found for this query.");
     }
 }

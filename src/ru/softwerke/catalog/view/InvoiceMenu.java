@@ -1,9 +1,22 @@
 package ru.softwerke.catalog.view;
 
-import ru.softwerke.catalog.controller.ControllerInvoice;
+import ru.softwerke.catalog.controller.InvoiceController;
+import ru.softwerke.catalog.view.io.IOUtils;
+import ru.softwerke.catalog.view.io.InputOutput;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class InvoiceMenu extends MainMenu {
-    ControllerInvoice controllerInvoice = new ControllerInvoice();
+    InvoiceController invoiceController = new InvoiceController();
+    private int id;
+    private int idClient;
+    int count;
+    int idDevice;
+    private LocalDate dateSale;
+    private BigDecimal totalSum;
+    DateTimeFormatter formatter;
 
     public static String MENU_INVOICE = "Invoices:\n" +
             "1. Print list\n" +
@@ -27,11 +40,13 @@ public class InvoiceMenu extends MainMenu {
     }
 
     public void menuInvoices() {
-        InputOutput.printLine(MENU_INVOICE);
-        String choice = InputOutput.readLine();
+        String choice;
         do {
+            InputOutput.printLine(MENU_INVOICE);
+            choice = InputOutput.readLine();
             switch (choice) {
                 case "1":
+                    menuPrintInvoices();
                     break;
                 case "2":
                     break;
@@ -46,5 +61,40 @@ public class InvoiceMenu extends MainMenu {
             }
 
         } while (!choice.equals("0"));
+    }
+
+    public void enterData() {
+        InputOutput.printLine("Enter id of client:");
+        idClient = InputOutput.readInt();
+        InputOutput.printLine("Enter date of sale (dd/mm/yyyy):");
+        String enterSaleDate = InputOutput.readLine();
+        boolean isEmptyDate = "".equals(enterSaleDate);
+        if (!isEmptyDate) {
+            while (!IOUtils.checkEnterDateWithRegExp(enterSaleDate)) {
+                InputOutput.printLine("Wrong enter! Enter date:");
+                enterSaleDate = InputOutput.readLine();
+            }
+            formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            dateSale = LocalDate.parse(enterSaleDate, formatter);
+        } else dateSale = LocalDate.MAX;
+
+        InputOutput.printLine("Enter id of device:");
+        idDevice = InputOutput.readInt();
+        InputOutput.printLine("Enter count of device:");
+        count = InputOutput.readInt();
+    }
+
+    public void menuPrintInvoices() {
+        String[] invoices = invoiceController.invoiceListToStringArray();
+        for (String i : invoices) {
+            InputOutput.printLine(i);
+        }
+    }
+
+    public void menuAddInvoice() {
+        enterData();
+        /*if (invoiceController.addInvoice(idClient, idDevice, count, dateSale)) {
+            InputOutput.printLine("Invoice successfully added.");
+        } else InputOutput.printLine("Invalid input. The information was not completely entered.");*/
     }
 }

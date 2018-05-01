@@ -1,4 +1,4 @@
-package ru.softwerke.catalog.view;
+package ru.softwerke.catalog.view.io;
 
 import java.io.*;
 import java.math.BigDecimal;
@@ -10,6 +10,15 @@ public class InputOutput {
     public static void printLine(String message) {
         try {
             bufferedWriter.write(message + System.getProperty("line.separator"));
+            bufferedWriter.flush();
+        } catch (IOException e) {
+            printLine("Output error.");
+        }
+    }
+
+    public static void printLine(Object o) {
+        try {
+            bufferedWriter.write(o.toString() + System.getProperty("line.separator"));
             bufferedWriter.flush();
         } catch (IOException e) {
             printLine("Output error.");
@@ -30,7 +39,7 @@ public class InputOutput {
             try {
                 return Integer.parseInt(readLine());
             } catch (NumberFormatException e) {
-                printLine("Input error.");
+                printLine("Input error. Enter the number: ");
             }
         }
     }
@@ -40,7 +49,7 @@ public class InputOutput {
             try {
                 return new BigDecimal(readLine());
             } catch (NumberFormatException e) {
-                printLine("Input error.");
+                printLine("Input error. Enter the price: ");
             }
         }
     }

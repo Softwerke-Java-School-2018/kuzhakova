@@ -1,10 +1,17 @@
-package ru.softwerke.catalog.entities;
+package ru.softwerke.catalog.model.entities;
 
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 
+/** Entity client
+ *
+ * @autor Kuzhakova Zarina
+ * @version 1.0
+ * @since 3-05-2018
+ */
 public class Client {
-    private static int COUNT = 0;
+    public static volatile AtomicInteger COUNT = new AtomicInteger(0);
     private int id;
     private String firstName;
     private String lastName;
@@ -46,7 +53,7 @@ public class Client {
     @Override
     public String toString() {
         String stringBirthDate = "";
-        if (birthDate != null) stringBirthDate = birthDate.toString();
+        if (Objects.nonNull(birthDate)) stringBirthDate = birthDate.toString();
         return "Client: " + id + ". " + firstName + " " + lastName + ", " + stringBirthDate;
     }
 
@@ -61,7 +68,7 @@ public class Client {
         }
 
         public ClientBuilder setId() {
-            Client.this.id = ++COUNT;
+            Client.this.id = COUNT.incrementAndGet();
             return this;
         }
 

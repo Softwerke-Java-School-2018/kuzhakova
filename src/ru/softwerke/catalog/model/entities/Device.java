@@ -1,14 +1,15 @@
-package ru.softwerke.catalog.entities;
+package ru.softwerke.catalog.model.entities;
 
-import ru.softwerke.catalog.enums.*;
+import ru.softwerke.catalog.model.enums.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Device {
     private int id;
-    private static int COUNT = 0;
+    public static volatile AtomicInteger COUNT = new AtomicInteger(0);
     private String modelOfDevice;
     private Manufacturer manufacturer;
     private Color color;
@@ -25,7 +26,8 @@ public class Device {
 
     @Override
     public String toString() {
-        return "Device: " + deviceType + " " + manufacturer + " " + modelOfDevice + " " + color;
+        return id + ": " + deviceType + " " + releaseDate + " " + price + " " + color + " "
+                + manufacturer + " " + modelOfDevice;
     }
 
     public int getId() {
@@ -80,7 +82,7 @@ public class Device {
         }
 
         public DeviceBuilder setId() {
-            Device.this.id = ++COUNT;
+            Device.this.id = COUNT.incrementAndGet();
             return this;
         }
 
