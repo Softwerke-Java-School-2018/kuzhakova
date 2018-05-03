@@ -12,10 +12,19 @@ public class MainMenu {
             "2. Devices\n" +
             "3. Invoices\n" +
             "0. Exit\n";
+    public final String[] sortingParameters = {"Ascending", "Descending"};
     public final String MENU_HOW_SORT = "Sort:\n" +
-            "1. Ascending\n" +
-            "2. Descending\n" +
+            toStringSortingParameters() +
             "0. Back";
+
+    public String toStringSortingParameters() {
+        StringBuilder stringBuilder = new StringBuilder("");
+        for (int i = 0; i < sortingParameters.length; i++) {
+            stringBuilder.append((i + 1) + ". " + sortingParameters[i]);
+            stringBuilder.append(System.lineSeparator());
+        }
+        return stringBuilder.toString();
+    }
 
     public void menu() {
         clientMenu = ClientMenu.getInstance();

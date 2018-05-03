@@ -1,6 +1,7 @@
 package ru.softwerke.catalog.view;
 
 import ru.softwerke.catalog.controller.ClientController;
+import ru.softwerke.catalog.model.entities.Client;
 import ru.softwerke.catalog.view.io.IOUtils;
 import ru.softwerke.catalog.view.io.InputOutput;
 
@@ -34,11 +35,9 @@ public class ClientMenu extends MainMenu {
             "4. Find client\n" +
             "5. Sort clients\n" +
             "0. Back";
-    public final String MENU_SORT_CLIENTS = "\nSort clients:\n" +
-            "1. By first name\n" +
-            "2. By last name\n" +
-            "3. By birth date\n" +
-            "0. Back";
+    public String MENU_SORT_CLIENTS = "\nSort clients by:\n"
+            + Client.toStringPropertiesList()
+            + "0. Back";
 
     @Override
     public void menu() {
@@ -81,12 +80,13 @@ public class ClientMenu extends MainMenu {
 
     public void menuSortClients() {
         InputOutput.printLine(MENU_SORT_CLIENTS);
-        int what = InputOutput.readInt();
-        if (!IOUtils.isCorrectParameter(what, clientController.comparatorsCount())) return;
+        int property = InputOutput.readInt();
+        if (!IOUtils.isCorrectParameter(property, clientController.comparatorsCount())) return;
+        String propertyInArray = Client.getPropertyInArray(property - 1);
         InputOutput.printLine(MENU_HOW_SORT);
-        int how = InputOutput.readInt();
-        if (!IOUtils.isCorrectParameter(how, 2)) return;
-        clientController.sort(what, how);
+        int sortingParameter = InputOutput.readInt();
+        if (!IOUtils.isCorrectParameter(sortingParameter, sortingParameters.length)) return;
+        clientController.sort(propertyInArray, sortingParameter);
     }
 
 

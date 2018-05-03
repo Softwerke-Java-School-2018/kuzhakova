@@ -1,5 +1,6 @@
 package ru.softwerke.catalog.model;
 
+import ru.softwerke.catalog.model.comparators.device.*;
 import ru.softwerke.catalog.model.storing.Database;
 import ru.softwerke.catalog.model.entities.Device;
 import ru.softwerke.catalog.model.enums.Color;
@@ -8,68 +9,29 @@ import ru.softwerke.catalog.model.enums.Manufacturer;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Stream;
 
 public class DeviceModel extends Database {
-   // private List<Device> deviceList = deviceList();
-    private List<Comparator<Device>> arrayComparators = new ArrayList<>();
+    private static final Map<String, Comparator<Object>> comparatorsMap =
+            Collections.unmodifiableMap(new HashMap<String, Comparator<Object>>() {{
+                put("manufacturer", new ManufacturerComparator());
+                put("model", new ModelComparator());
+                put("date of release", new ReleaseDateComparator());
+                put("color", new ColorComparator());
+                put("type", new DeviceTypeComparator());
+                put("price", new PriceComparator());
+            }});
 
     public DeviceModel() {
-        arrayComparators.add(new ModelOfDeviceComparator());
-        arrayComparators.add(new ManufacturerComparator());
-        arrayComparators.add(new ColorComparator());
-        arrayComparators.add(new ReleaseDateComparator());
-        arrayComparators.add(new DeviceTypeComparator());
-        arrayComparators.add(new PriceComparator());
     }
 
-    public Comparator getComparator(int n) {
-        return arrayComparators.get(n);
+    public int getArrayComparatorsSize() {
+        return comparatorsMap.size();
     }
 
-    public class ModelOfDeviceComparator implements Comparator<Device> {
-        @Override
-        public int compare(Device o1, Device o2) {
-            return o1.getModelOfDevice().compareTo(o2.getModelOfDevice());
-        }
-    }
-
-    public class ManufacturerComparator implements Comparator<Device> {
-        @Override
-        public int compare(Device o1, Device o2) {
-            return o1.getManufacturer().compareTo(o2.getManufacturer());
-        }
-    }
-
-    public class ColorComparator implements Comparator<Device> {
-        @Override
-        public int compare(Device o1, Device o2) {
-            return o1.getColor().compareTo(o2.getColor());
-        }
-    }
-
-    public class ReleaseDateComparator implements Comparator<Device> {
-        @Override
-        public int compare(Device o1, Device o2) {
-            return o1.getReleaseDate().compareTo(o2.getReleaseDate());
-        }
-    }
-
-    public class DeviceTypeComparator implements Comparator<Device> {
-        @Override
-        public int compare(Device o1, Device o2) {
-            return o1.getDeviceType().compareTo(o2.getDeviceType());
-        }
-    }
-
-    public class PriceComparator implements Comparator<Device> {
-        @Override
-        public int compare(Device o1, Device o2) {
-            return o1.getPrice().compareTo(o2.getPrice());
-        }
+    public Comparator getComparator(String property) {
+        return comparatorsMap.get(property);
     }
 
     public Stream<Device> getStreamDeviceList() {
@@ -99,8 +61,17 @@ public class DeviceModel extends Database {
         return deviceList().remove(device);
     }
 
-    public boolean deleteDevice(int id) {
-        return deviceList().removeIf(d -> d.getId() == id);
+    public Device deleteByID(int id) {
+        int index = -1;
+        for (Device d : deviceList()) {
+            if (d.getID() == id) {
+                index = deviceList().indexOf(d);
+            }
+        }
+        if (index == -1) {
+            return null;
+        }
+        return deviceList().remove(index);
     }
 
     public Device equalsDevice(Device enteredClient) {

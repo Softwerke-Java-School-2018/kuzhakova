@@ -1,14 +1,14 @@
 package ru.softwerke.catalog.model.entities;
 
 import ru.softwerke.catalog.model.enums.*;
+import ru.softwerke.catalog.view.io.InputOutput;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class Device {
-    private int id;
+public class Device extends DataItem {
     public static volatile AtomicInteger COUNT = new AtomicInteger(0);
     private String modelOfDevice;
     private Manufacturer manufacturer;
@@ -16,6 +16,26 @@ public class Device {
     private LocalDate releaseDate;
     private DeviceType deviceType;
     private BigDecimal price;
+    private static final String[] propertiesArray = {"manufacturer", "model", "date of release",
+            "color", "type", "price"};
+
+    public static String getPropertyInArray(int number) {
+        try {
+            return propertiesArray[number];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            InputOutput.printLine("Invalid property number.");
+            return "";
+        }
+    }
+
+    public static String toStringPropertiesList() {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < propertiesArray.length; i++) {
+            stringBuilder.append((i + 1) + ". " + propertiesArray[i])
+                    .append(System.lineSeparator());
+        }
+        return stringBuilder.toString();
+    }
 
     private Device() {
     }
@@ -30,7 +50,7 @@ public class Device {
                 + manufacturer + " " + modelOfDevice;
     }
 
-    public int getId() {
+    public int getID() {
         return id;
     }
 
@@ -81,11 +101,6 @@ public class Device {
             return this;
         }
 
-        public DeviceBuilder setId() {
-            Device.this.id = COUNT.incrementAndGet();
-            return this;
-        }
-
         public DeviceBuilder setColor(Color color) {
             Device.this.color = color;
             return this;
@@ -117,6 +132,7 @@ public class Device {
         }
 
         public Device build() {
+            Device.this.id = COUNT.incrementAndGet();
             return Device.this;
         }
 

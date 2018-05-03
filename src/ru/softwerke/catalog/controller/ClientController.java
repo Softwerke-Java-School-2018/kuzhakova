@@ -39,7 +39,6 @@ public class ClientController {
 
     public Client findClient(String firstName, String lastName, LocalDate birthDate) {
         Client client = Client.newClientBuilder()
-                .setId()
                 .setFirstName(firstName)
                 .setLastName(lastName)
                 .setBirthDate(birthDate)
@@ -52,7 +51,6 @@ public class ClientController {
     public boolean addClient(String firstName, String lastName, LocalDate birthDate) {
         if (!("".equals(firstName) || "".equals(lastName) || Objects.isNull(birthDate))) {
             clientModel.addClient(Client.newClientBuilder()
-                    .setId()
                     .setFirstName(firstName)
                     .setLastName(lastName)
                     .setBirthDate(birthDate)
@@ -87,12 +85,12 @@ public class ClientController {
         }
     }
 
-    public void sort(int what, int how) {
+    public void sort(String property, int sortingParameter) {
         List<Client> sortClientList = clientModel.getStreamClientList().collect(Collectors.toList());
-        if (how == 2) {
-            Collections.sort(sortClientList, Collections.reverseOrder(clientModel.getComparator(what - 1)));
+        if (sortingParameter == 2) {
+            Collections.sort(sortClientList, Collections.reverseOrder(clientModel.getComparator(property)));
         } else {
-            Collections.sort(sortClientList, clientModel.getComparator(what - 1));
+            Collections.sort(sortClientList, clientModel.getComparator(property));
         }
         for (Client c : sortClientList) {
             InputOutput.printLine(c.toString());

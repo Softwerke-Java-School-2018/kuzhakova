@@ -30,7 +30,7 @@ public class DeviceController {
                              DeviceType deviceType,
                              BigDecimal price) {
         Device device = Device.newDeviceBuilder()
-                .setId()
+                //.setId()
                 .setModelOfDevice(modelOfDevice)
                 .setManufacturer(manufacturer)
                 .setColor(color)
@@ -59,6 +59,21 @@ public class DeviceController {
         return deviceModel.deleteDevice(device);
     }
 
+    public boolean deleteByID(int id) {
+        try {
+            Device device = deviceModel.deleteByID(id);
+            if (Objects.nonNull(device)) {
+                InputOutput.printLine("The following device will be deleted:");
+                InputOutput.printLine(device);
+                return true;
+            }
+            return false;
+        } catch (Exception e) {
+            InputOutput.printLine(e.getMessage());
+            return false;
+        }
+    }
+
     //TODO: ввод данных девайса при поиске и удалении
     public Device findDevice(String modelOfDevice,
                              Manufacturer manufacturer,
@@ -67,7 +82,6 @@ public class DeviceController {
                              DeviceType deviceType,
                              BigDecimal price) {
         Device c = deviceModel.equalsDevice(Device.newDeviceBuilder()
-                .setId()
                 .setModelOfDevice(modelOfDevice)
                 .setManufacturer(manufacturer)
                 .setColor(color)
@@ -112,7 +126,7 @@ public class DeviceController {
                 InputOutput.printLine("Enter ID to delete client. Enter 0 to cancel:");
                 int ind = InputOutput.readInt();
                 if (ind == 0) return false;
-                deviceModel.deleteDevice(ind);
+                deviceModel.deleteByID(ind);
                 return true;
             }
             InputOutput.printLine("Device not found.");
@@ -122,15 +136,20 @@ public class DeviceController {
         }
     }
 
-    public void sort(int what, int how) {
-        List<Device> sortedDeviceList = deviceModel.getStreamDeviceList().collect(Collectors.toList());
-        if (how == 2) {
-            Collections.sort(sortedDeviceList, Collections.reverseOrder(deviceModel.getComparator(what - 1)));
+    public int comparatorsCount() {
+        return deviceModel.getArrayComparatorsSize();
+    }
+
+    public void sort(String property, int sortingParameter) {
+        List<Device> sorteDeviceList = deviceModel.getStreamDeviceList().collect(Collectors.toList());
+        if (sortingParameter == 2) {
+            Collections.sort(sorteDeviceList, Collections.reverseOrder(deviceModel.getComparator(property)));
         } else {
-            Collections.sort(sortedDeviceList, deviceModel.getComparator(what - 1));
+            Collections.sort(sorteDeviceList, deviceModel.getComparator(property));
         }
-        for (Device c : sortedDeviceList) {
-            InputOutput.printLine(c.toString());
+        for (Device device : sorteDeviceList) {
+            InputOutput.printLine(device.toString());
         }
     }
+
 }

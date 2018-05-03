@@ -1,6 +1,7 @@
 package ru.softwerke.catalog.view;
 
 import ru.softwerke.catalog.controller.DeviceController;
+import ru.softwerke.catalog.model.entities.Device;
 import ru.softwerke.catalog.model.enums.*;
 import ru.softwerke.catalog.view.io.IOUtils;
 import ru.softwerke.catalog.view.io.InputOutput;
@@ -25,6 +26,9 @@ public class DeviceMenu extends MainMenu {
             "3. Delete device\n" +
             "4. Find device\n" +
             "5. Sort device\n" +
+            "0. Back";
+    public final String MENU_SORT_DEVICES = "\nSort devices by:\n" +
+            Device.toStringPropertiesList() +
             "0. Back";
 
     private DeviceMenu() {
@@ -59,13 +63,28 @@ public class DeviceMenu extends MainMenu {
                 case "4":
                     menuFindDevice();
                     break;
+                case "5":
+                    menuSortDevices();
+                    break;
                 case "0":
                     break;
                 default:
+                    InputOutput.printLine("Invalid input.");
                     break;
             }
 
         } while (!choice.equals("0"));
+    }
+
+    private void menuSortDevices() {
+        InputOutput.printLine(MENU_SORT_DEVICES);
+        int property = InputOutput.readInt();
+        if (!IOUtils.isCorrectParameter(property, deviceController.comparatorsCount())) return;
+        String propertyInArray = Device.getPropertyInArray(property - 1);
+        InputOutput.printLine(MENU_HOW_SORT);
+        int sortingParameter = InputOutput.readInt();
+        if (!IOUtils.isCorrectParameter(sortingParameter, sortingParameters.length)) return;
+        deviceController.sort(propertyInArray, sortingParameter);
     }
 
     public void enterDataOfDevice() {
@@ -115,14 +134,13 @@ public class DeviceMenu extends MainMenu {
     }
 
     public void menuDeleteDevice() {
-        enterDataOfDevice();
-        if (!deviceController.deleteDevice(model, manufacturer, color, releaseDate, deviceType, price)) {
-            if (!deviceController.printFoundDeviceList(model, manufacturer, color, releaseDate, deviceType, price)) {
-                InputOutput.printLine("Removal did not happen.");
-                return;
-            }
+        InputOutput.printLine("Enter ID of device:");
+        int id = InputOutput.readInt();
+        if (deviceController.deleteByID(id)) {
+            InputOutput.printLine("Device successfully deleted.");
+            return;
         }
-        InputOutput.printLine("Device successfully deleted.");
+        InputOutput.printLine("Removal did not happen.");
     }
 
     public void menuFindDevice() {

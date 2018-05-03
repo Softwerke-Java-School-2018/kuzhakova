@@ -1,23 +1,38 @@
 package ru.softwerke.catalog.model.entities;
 
+import javafx.scene.chart.PieChart;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class Invoice {
+public class Invoice extends DataItem {
     public static volatile AtomicInteger COUNT = new AtomicInteger(0);
-    private int id;
     private Client client;
     private LocalDate dateSale;
     private BigDecimal totalSum;
     private Map<Device, Integer> deviceCountMap = new HashMap<Device, Integer>();
+    private static final String[] propertiesArray = {"client", "date of sale", "total sum"};
 
     private Invoice() {
     }
 
-    private BigDecimal getTotalSum() {
+    public static String getPropertyInArray(int number) {
+        return propertiesArray[number];
+    }
+
+    public static String toStringPropertiesList() {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < propertiesArray.length; i++) {
+            stringBuilder.append((i + 1) + ". " + propertiesArray[i])
+                    .append(System.lineSeparator());
+        }
+        return stringBuilder.toString();
+    }
+
+    private void calculateTotalSum() {
         totalSum = BigDecimal.valueOf(0);
         Device device;
         int count;
@@ -28,6 +43,9 @@ public class Invoice {
             price = device.getPrice();
             totalSum = totalSum.add(price.multiply(BigDecimal.valueOf(count)));
         }
+    }
+
+    public BigDecimal getTotalSum() {
         return totalSum;
     }
 
@@ -35,7 +53,7 @@ public class Invoice {
         return new Invoice().new InvoiceBuilder();
     }
 
-    public int getId() {
+    public int getID() {
         return id;
     }
 
@@ -69,7 +87,7 @@ public class Invoice {
                     stringBuilder.append(d.getDeviceType() + " " + d.getColor() + " " + d.getManufacturer() + " "
                             + d.getModelOfDevice())
                             .append(" ")
-                            .append(" - "+ c)
+                            .append(" - " + c)
                             .append(System.lineSeparator());
                     ;
                 }
@@ -85,11 +103,6 @@ public class Invoice {
 
         public InvoiceBuilder setId(int id) {
             Invoice.this.id = id;
-            return this;
-        }
-
-        public InvoiceBuilder setId() {
-            Invoice.this.id = COUNT.incrementAndGet();
             return this;
         }
 
@@ -114,7 +127,8 @@ public class Invoice {
         }
 
         public Invoice build() {
-            getTotalSum();
+            Invoice.this.id = COUNT.incrementAndGet();
+            calculateTotalSum();
             return Invoice.this;
         }
 

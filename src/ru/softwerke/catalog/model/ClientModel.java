@@ -1,50 +1,32 @@
 package ru.softwerke.catalog.model;
 
+import ru.softwerke.catalog.model.comparators.client.BirthDateComparator;
+import ru.softwerke.catalog.model.comparators.client.FirstNameComparator;
+import ru.softwerke.catalog.model.comparators.client.LastNameComparator;
 import ru.softwerke.catalog.model.storing.Database;
 import ru.softwerke.catalog.model.entities.Client;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Stream;
 
 public class ClientModel extends Database {
-    private List<Comparator<Client>> arrayComparators = new ArrayList<>();
+    private static final Map<String, Comparator<Object>> comparatorsMap =
+            Collections.unmodifiableMap(new HashMap<String, Comparator<Object>>() {{
+                put("first name", new FirstNameComparator());
+                put("last name", new LastNameComparator());
+                put("birth date", new BirthDateComparator());
+            }});
 
     public ClientModel() {
-        arrayComparators.add(new FirstNameComparator());
-        arrayComparators.add(new LastNameComparator());
-        arrayComparators.add(new BirthDateComparator());
     }
 
     public int getArrayComparatorsSize() {
-        return arrayComparators.size();
+        return comparatorsMap.size();
     }
 
-    public Comparator getComparator(int n) {
-        return arrayComparators.get(n);
-    }
-
-    public class FirstNameComparator implements Comparator<Client> {
-        @Override
-        public int compare(Client o1, Client o2) {
-            return o1.getFirstName().compareTo(o2.getFirstName());
-        }
-    }
-
-    public class LastNameComparator implements Comparator<Client> {
-        @Override
-        public int compare(Client o1, Client o2) {
-            return o1.getLastName().compareTo(o2.getLastName());
-        }
-    }
-
-    public class BirthDateComparator implements Comparator<Client> {
-        @Override
-        public int compare(Client o1, Client o2) {
-            return o1.getBirthDate().compareTo(o2.getBirthDate());
-        }
+    public Comparator getComparator(String property) {
+        return comparatorsMap.get(property);
     }
 
     public Stream<Client> getStreamClientList() {
@@ -69,7 +51,7 @@ public class ClientModel extends Database {
     }
 
     public boolean deleteClient(int id) {
-        return clientList().removeIf(c -> c.getId() == id);
+        return clientList().removeIf(c -> c.getID() == id);
     }
 
     public Client equalsClient(Client enteredClient) {

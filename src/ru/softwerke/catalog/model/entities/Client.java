@@ -1,23 +1,43 @@
 package ru.softwerke.catalog.model.entities;
 
+import ru.softwerke.catalog.view.io.InputOutput;
+
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Stream;
 
-/** Entity client
+/**
+ * Entity client
  *
- * @autor Kuzhakova Zarina
  * @version 1.0
+ * @autor Kuzhakova Zarina
  * @since 3-05-2018
  */
-public class Client {
+public class Client extends DataItem {
     public static volatile AtomicInteger COUNT = new AtomicInteger(0);
-    private int id;
     private String firstName;
     private String lastName;
     private LocalDate birthDate;
+    private static final String[] propertiesArray = {"first name", "last name", "birth date"};
 
     private Client() {
+    }
+
+    public static String getPropertyInArray(int number) {
+        return propertiesArray[number];
+    }
+
+    public static String toStringPropertiesList() {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < propertiesArray.length; i++) {
+            stringBuilder.append((i + 1) + ". " + propertiesArray[i])
+                    .append(System.lineSeparator());
+        }
+        return stringBuilder.toString();
     }
 
     public static ClientBuilder newClientBuilder() {
@@ -32,7 +52,7 @@ public class Client {
         return lastName;
     }
 
-    public int getId() {
+    public int getID() {
         return id;
     }
 
@@ -67,11 +87,6 @@ public class Client {
             return this;
         }
 
-        public ClientBuilder setId() {
-            Client.this.id = COUNT.incrementAndGet();
-            return this;
-        }
-
         public ClientBuilder setFirstName(String firstName) {
             Client.this.firstName = firstName;
             return this;
@@ -88,6 +103,7 @@ public class Client {
         }
 
         public Client build() {
+            Client.this.id = COUNT.incrementAndGet();
             return Client.this;
         }
 
