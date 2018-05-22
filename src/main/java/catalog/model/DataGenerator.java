@@ -6,6 +6,9 @@ import catalog.model.entities.Invoice;
 import catalog.model.enums.Color;
 import catalog.model.enums.DeviceType;
 import catalog.model.enums.Manufacturer;
+import catalog.model.dao.ClientModel;
+import catalog.model.dao.DeviceModel;
+import catalog.model.dao.InvoiceModel;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

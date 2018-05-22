@@ -1,10 +1,9 @@
-package catalog.model;
+package catalog.model.dao;
 
 import catalog.model.comparators.client.BirthDateComparator;
 import catalog.model.comparators.client.FirstNameComparator;
 import catalog.model.comparators.client.LastNameComparator;
 import catalog.model.entities.Client;
-import catalog.model.storing.MainModel;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -60,5 +59,9 @@ public class ClientModel extends MainModel {
             if (c.equals(enteredClient)) return c;
         }
         return null;
+    }
+
+    public void clear(){
+        clientList().clear();
     }
 }

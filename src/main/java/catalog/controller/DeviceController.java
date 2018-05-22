@@ -1,6 +1,6 @@
 package catalog.controller;
 
-import catalog.model.DeviceModel;
+import catalog.model.dao.DeviceModel;
 import catalog.model.entities.Device;
 import catalog.model.enums.*;
 import catalog.view.io.InputOutput;
@@ -19,8 +19,8 @@ public class DeviceController {
     public DeviceController() {
     }
 
-    public String[] deviceListToStringArray() {
-        return deviceModel.getStreamDeviceList().map(d -> d.toString()).toArray(String[]::new);
+    public void printList() {
+        deviceModel.getStreamDeviceList().forEach(InputOutput::printLine);
     }
 
     public boolean addDevice(String modelOfDevice,
@@ -150,6 +150,10 @@ public class DeviceController {
         for (Device device : sorteDeviceList) {
             InputOutput.printLine(device.toString());
         }
+    }
+
+    public void clearList(){
+        deviceModel.clear();
     }
 
 }

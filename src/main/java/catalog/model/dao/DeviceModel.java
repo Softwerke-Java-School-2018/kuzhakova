@@ -1,7 +1,6 @@
-package catalog.model;
+package catalog.model.dao;
 
 import catalog.model.comparators.device.*;
-import catalog.model.storing.MainModel;
 import catalog.model.entities.Device;
 import catalog.model.enums.Color;
 import catalog.model.enums.DeviceType;
@@ -79,5 +78,9 @@ public class DeviceModel extends MainModel {
             if (d.equals(enteredClient)) return d;
         }
         return null;
+    }
+
+    public void clear(){
+        deviceList().clear();
     }
 }

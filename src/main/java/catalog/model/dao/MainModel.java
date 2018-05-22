@@ -1,4 +1,4 @@
-package catalog.model.storing;
+package catalog.model.dao;
 
 import catalog.model.entities.Client;
 import catalog.model.entities.Device;

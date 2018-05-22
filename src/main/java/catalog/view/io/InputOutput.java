@@ -2,14 +2,25 @@ package catalog.view.io;
 
 import java.io.*;
 import java.math.BigDecimal;
+import java.util.Objects;
+
+import org.apache.commons.lang3.StringUtils;
 
 public class InputOutput {
     private static BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
     private static BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(System.out));
 
+    /*public InputOutput(InputStream in, OutputStream out) throws IllegalArgumentException {
+        bufferedReader = new BufferedReader(new InputStreamReader(in));
+        bufferedWriter = new BufferedWriter(new OutputStreamWriter(out));
+    }*/
+
     public static void printLine(String message) {
         try {
-            bufferedWriter.write(message + System.getProperty("line.separator"));
+            if (StringUtils.isNoneBlank(message)) {
+                bufferedWriter.write(message);
+            }
+            bufferedWriter.write(System.lineSeparator());
             bufferedWriter.flush();
         } catch (IOException e) {
             printLine("Output error.");
@@ -18,7 +29,10 @@ public class InputOutput {
 
     public static void printLine(Object o) {
         try {
-            bufferedWriter.write(o.toString() + System.getProperty("line.separator"));
+            if (Objects.nonNull(o)) {
+                bufferedWriter.write(o.toString());
+            }
+            bufferedWriter.write(System.lineSeparator());
             bufferedWriter.flush();
         } catch (IOException e) {
             printLine("Output error.");

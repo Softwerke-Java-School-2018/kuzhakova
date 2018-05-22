@@ -1,7 +1,6 @@
-package catalog.model;
+package catalog.model.dao;
 
 import catalog.model.comparators.invoice.*;
-import catalog.model.storing.MainModel;
 import catalog.model.entities.Invoice;
 
 import java.util.Collections;
@@ -49,5 +48,9 @@ public class InvoiceModel extends MainModel {
 
     public int getArrayComparatorsSize() {
         return comparatorsMap.size();
+    }
+
+    public void clear(){
+        invoiceList().clear();
     }
 }

@@ -1,8 +1,8 @@
 package catalog.controller;
 
 import catalog.model.entities.Invoice;
-import catalog.model.storing.MainModel;
-import catalog.model.InvoiceModel;
+import catalog.model.dao.MainModel;
+import catalog.model.dao.InvoiceModel;
 import catalog.model.entities.Client;
 import catalog.model.entities.Device;
 import catalog.view.io.InputOutput;
@@ -60,8 +60,8 @@ public class InvoiceController {
         return false;
     }
 
-    public String[] invoiceListToStringArray() {
-        return invoiceModel.getStreamInvoiceList().map(c -> c.toString()).toArray(String[]::new);
+    public void printList() {
+        invoiceModel.getStreamInvoiceList().forEach(InputOutput::printLine);
     }
 
     public boolean deleteByID(int id) {
@@ -103,5 +103,9 @@ public class InvoiceController {
         for (Invoice invoice : sortInvoiceList) {
             InputOutput.printLine(invoice.toString());
         }
+    }
+
+    public void clearList(){
+        invoiceModel.clear();
     }
 }

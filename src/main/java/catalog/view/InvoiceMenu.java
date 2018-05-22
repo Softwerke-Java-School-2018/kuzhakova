@@ -99,10 +99,7 @@ public class InvoiceMenu extends MainMenu {
     }
 
     public void menuPrintInvoices() {
-        String[] invoices = invoiceController.invoiceListToStringArray();
-        for (String i : invoices) {
-            InputOutput.printLine(i);
-        }
+        invoiceController.printList();
     }
 
     public void menuAddInvoice() {

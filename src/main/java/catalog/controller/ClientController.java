@@ -1,6 +1,6 @@
 package catalog.controller;
 
-import catalog.model.ClientModel;
+import catalog.model.dao.ClientModel;
 import catalog.model.entities.Client;
 import catalog.view.io.InputOutput;
 
@@ -17,8 +17,8 @@ public class ClientController {
     public ClientController() {
     }
 
-    public String[] clientListToStringArray() {
-        return clientModel.getStreamList().map(c -> c.toString()).toArray(String[]::new);
+    public void printList() {
+        clientModel.getStreamList().forEach(InputOutput::printLine);
     }
 
     public boolean findSimilarClients(String fName, String lName, LocalDate birthDate) {
@@ -99,5 +99,9 @@ public class ClientController {
 
     public int comparatorsCount() {
         return clientModel.getArrayComparatorsSize();
+    }
+
+    public void clearList(){
+        clientModel.clear();
     }
 }

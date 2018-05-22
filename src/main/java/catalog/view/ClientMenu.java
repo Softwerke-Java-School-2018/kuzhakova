@@ -72,10 +72,7 @@ public class ClientMenu extends MainMenu {
     }
 
     public void menuPrintClients() {
-        String[] clients = clientController.clientListToStringArray();
-        for (String c : clients) {
-            InputOutput.printLine(c);
-        }
+        clientController.printList();
     }
 
     public void menuSortClients() {

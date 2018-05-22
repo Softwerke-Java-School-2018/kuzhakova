@@ -7,6 +7,7 @@ import catalog.view.io.IOUtils;
 import catalog.view.io.InputOutput;
 
 import java.math.BigDecimal;
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
@@ -104,6 +105,7 @@ public class DeviceMenu extends MainMenu {
             InputOutput.printLine("Wrong enter! Enter date:");
             enterReleaseDate = InputOutput.readLine();
         }
+
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         releaseDate = LocalDate.parse(enterReleaseDate, formatter);
 
@@ -124,10 +126,7 @@ public class DeviceMenu extends MainMenu {
     public void menuPrintDevices() {
         InputOutput.printLine("type | date of release | price | color| manufacturer, model ");
         InputOutput.printLine("-----------------------------------------------------------------------");
-        String[] devices = deviceController.deviceListToStringArray();
-        for (String c : devices) {
-            InputOutput.printLine(c);
-        }
+        deviceController.printList();
     }
 
     public void menuAddDevice() {
