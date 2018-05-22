@@ -13,7 +13,6 @@ import java.util.stream.Stream;
 /**
  * Entity client
  *
- * @version 1.0
  * @autor Kuzhakova Zarina
  * @since 3-05-2018
  */

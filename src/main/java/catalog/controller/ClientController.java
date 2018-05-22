@@ -21,6 +21,13 @@ public class ClientController {
         clientModel.getStreamList().forEach(InputOutput::printLine);
     }
 
+    /**
+     * The method displays similar clients, if there was no exact match when searching for the client
+     * @param fName First name of client
+     * @param lName Last name of client
+     * @param birthDate Birth date of client
+     * @return true, if clients found
+     */
     public boolean findSimilarClients(String fName, String lName, LocalDate birthDate) {
         try {
             Stream<Client> foundClients = clientModel.selectClients(fName, lName, birthDate);
@@ -85,6 +92,11 @@ public class ClientController {
         }
     }
 
+    /**
+     * Client sorting method
+     * @param property Customer field, by which it will be sorted
+     * @param sortingParameter Sorting order
+     */
     public void sort(String property, int sortingParameter) {
         List<Client> sortClientList = clientModel.getStreamList().collect(Collectors.toList());
         if (sortingParameter == 2) {

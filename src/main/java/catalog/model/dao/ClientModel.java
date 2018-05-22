@@ -9,8 +9,12 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Stream;
 
+
 public class ClientModel extends MainModel {
 
+    /**
+     * Field HashMap of comparators. The key is the client's property in String, the value is the class of comparator
+     */
     private static final Map<String, Comparator<Object>> comparatorsMap =
             Collections.unmodifiableMap(new HashMap<String, Comparator<Object>>() {{
                 put("first name", new FirstNameComparator());
